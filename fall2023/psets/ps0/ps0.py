@@ -11,6 +11,10 @@
 class BinaryTree:
     def __init__(self, root):
         self.root: BTvertex = root
+
+# init is used to pass initial parameters to the class 
+# run python3 *insert name of file* 
+# self is not actually an argument, just something used to refer to itself, doesn't really do anything 
  
 class BTvertex:
     def __init__(self, key):
@@ -30,12 +34,20 @@ class BTvertex:
 # ... tree rooted at vertex v to the size of that subtree
 # Runtime: O(n)
 def calculate_sizes(v):
-    # Your code goes here
-    pass
+    if v is None: 
+        return 0
+    else:  
+        v.size = 1 + calculate_sizes(v.left) + calculate_sizes(v.right)
+    return v.size
 
 #
 # Problem 1c
 #
+
+root = BTvertex(120) 
+tree = BinaryTree(root)
+tree.root.left = BTvertex(121)
+tree.root.right = BTvertex(124)
 
 # Input: BTvertex r, the root of a size-augmented BinaryTree T
 # ... of size n and height h
@@ -45,3 +57,49 @@ def calculate_sizes(v):
 def find_vertex(r): 
     # Your code goes here
     pass
+
+
+# section exercises 
+# given a string s, write a recursive algorithm to determine if palindrome or not
+# RECURSIVE
+
+def palindrome(s): 
+    newstring = ""
+    for i in range(len(s)): 
+        newstring = newstring + s[len(s) - i + 1]
+    if newstring == s: 
+        print("palindrome") 
+    else: 
+        print("not a palindrome")
+
+def is_palindrome(s): 
+    if (len(s)) <= 1: 
+        return True
+    if (s[0] != s[len(s) - 1]): 
+        return False
+    new_s = s[1: len(s) - 1]
+    return is_palindrome(new_s)
+
+class Tree: 
+    children: []
+    key: int
+    temp: int
+
+def populateTemp(T): 
+    for i in range(len(T.children)): 
+        T.children[i].temp = len(T.children[i])
+
+def populateTemp(T): 
+    T.temp = len(T.children)
+    for subtree in T.children: 
+        populateTemp(subtree)
+
+# the above doesn't return anything, just sets the temp field in each thingy. 
+
+def elementExists(T, target): 
+    if T.temp is target: 
+        return True
+    for subtree in T.children: 
+        if elementExists(subtree, target): 
+            return True
+    return False
