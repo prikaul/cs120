@@ -56,50 +56,17 @@ tree.root.right = BTvertex(124)
 # Runtime: O(h)
 def find_vertex(r): 
     # Your code goes here
-    pass
+    # takes in a root vertex v, trying to find the vertex that 
+    # program is supposed to return a vertex, that when you remove it, creates the largest subtree that is leq n-2 
 
-
-# section exercises 
-# given a string s, write a recursive algorithm to determine if palindrome or not
-# RECURSIVE
-
-def palindrome(s): 
-    newstring = ""
-    for i in range(len(s)): 
-        newstring = newstring + s[len(s) - i + 1]
-    if newstring == s: 
-        print("palindrome") 
-    else: 
-        print("not a palindrome")
-
-def is_palindrome(s): 
-    if (len(s)) <= 1: 
-        return True
-    if (s[0] != s[len(s) - 1]): 
-        return False
-    new_s = s[1: len(s) - 1]
-    return is_palindrome(new_s)
-
-class Tree: 
-    children: []
-    key: int
-    temp: int
-
-def populateTemp(T): 
-    for i in range(len(T.children)): 
-        T.children[i].temp = len(T.children[i])
-
-def populateTemp(T): 
-    T.temp = len(T.children)
-    for subtree in T.children: 
-        populateTemp(subtree)
-
-# the above doesn't return anything, just sets the temp field in each thingy. 
-
-def elementExists(T, target): 
-    if T.temp is target: 
-        return True
-    for subtree in T.children: 
-        if elementExists(subtree, target): 
-            return True
-    return False
+    def helper(x): 
+        if x is None: 
+            return None 
+        if x.left != None and x.left.size > (r.size / 2):
+            return find_vertex(x.left)
+        if x.right != None and x.right.size > (r.size / 2): 
+            return find_vertex(x.right)
+        else: 
+            return x
+    helper(r)
+    
