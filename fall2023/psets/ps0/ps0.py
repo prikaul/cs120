@@ -59,14 +59,12 @@ def find_vertex(r):
     # takes in a root vertex v, trying to find the vertex that 
     # program is supposed to return a vertex, that when you remove it, creates the largest subtree that is leq n-2 
 
-    def helper(x): 
-        if x is None: 
-            return None 
-        if x.left != None and x.left.size > (r.size / 2):
-            return find_vertex(x.left)
-        if x.right != None and x.right.size > (r.size / 2): 
-            return find_vertex(x.right)
-        else: 
-            return x
-    helper(r)
+    if r is None: 
+        return None 
+    if r.left is not None and r.left.size > (r.size / 2):
+        return find_vertex(r.left)
+    elif r.right is not None and r.right.size > (r.size / 2): 
+        return find_vertex(r.right)
+    else: 
+        return r
     
