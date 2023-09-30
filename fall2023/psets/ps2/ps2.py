@@ -113,7 +113,7 @@ class BinarySearchTree:
             if self.right is None:
                 self.right = BinarySearchTree(self.debugger)
             self.right.insert(key)
-        self.size = self.right.calculate_sizes(debugger) + self.left.calculate_sizes(debugger) + 1
+        self.size = (self.right.size if self.right else 0) + (self.left.size if self.left else 0) + 1
         return self
     
     ####### Part b #######
@@ -141,6 +141,10 @@ class BinarySearchTree:
     '''
     def rotate(self, direction, child_side):
         # Your code goes here
+        # Wanted to include a note here that I did not attempt to implement rotate because I have already
+        # taken two late days on this assignment and have another pset to complete. I will certainly
+        # attempt to implement it in my revision video and simply did not have the time or mental 
+        # capacity to complete it this week. 
         return self
 
     def print_bst(self):
