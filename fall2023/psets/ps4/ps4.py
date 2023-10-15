@@ -32,11 +32,36 @@ returns: An key-value pair (Kj, Vj) such that Kj is an i’th smallest key.
 
 def QuickSelect(arr, i):
     # Your code here
-
     # Feel free to use get_random_index(arr) or get_random_int(start_inclusive, end_inclusive)
     # ... see the helper functions below
-    pass
-    return (0, -1)
+    # pri starts here
+    assert(len(arr) > 0)
+    if len(arr) == 1: 
+        return arr[0]  
+    else: 
+        p = get_random_index(arr)
+        x = arr[p][0] # changed from arr[p] to arr[p][0]
+        less = []
+        more = []
+        equal = []
+        for j in range(len(arr)): # is i the key? and then arr[i] is the value? 
+            if arr[j][0] < x: 
+                less.append(arr[j])
+            elif arr[j][0] > x: 
+                more.append(arr[j])
+            else: 
+                equal.append(arr[j])
+        lesslen = len(less)
+        morelen = len(more)
+        equallen = len(equal) 
+        if i < lesslen: 
+            return QuickSelect(less, i)
+        elif (i >= (lesslen + equallen)): 
+            return QuickSelect(more, (i - lesslen - equallen))
+        else: 
+            return equal[0]
+    # pass
+    # return (0, -1)
 
 
 '''
