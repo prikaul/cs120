@@ -53,15 +53,15 @@ class BinarySearchTree:
     returns BinarySearchTree/Node or None
     '''
     def select(self, ind):
-        left_size = 0
-        if self.left is not None:
-            left_size = self.left.size
-        if ind == left_size:
+        left_size = 0 # sets some random new variable left_size 
+        if self.left is not None: # if there exists something in the left tree  
+            left_size = self.left.size # set .. shouldn't it be self.left._size ??
+        if ind == left_size: # i think this is pretty clearly wrong ?? 
             return self
         if left_size > ind and self.left is not None:
             return self.left.select(ind)
         if left_size < ind and self.right is not None:
-            return self.right.select(ind)
+            return self.right.select(ind - left_size - 1)
         return None
 
 
@@ -71,15 +71,15 @@ class BinarySearchTree:
     '''
     def search(self, key):
         if self is None:
-            return None
+            return None # catching base case kind of 
         elif self.key == key:
-            return self
-        elif self.key < key and self.right is not None:
-            return self.right.search(key)
-        elif self.left is not None:
+            return self # if the key matches the current one, then return that BST 
+        elif self.key < key and self.right is not None: # if key > self.key
+            return self.right.search(key) # then return search from the right 
+        elif self.left is not None: # else 
             return self.left.search(key)
         return None
-    
+    # i think the above is correct ? 
 
     '''
     Inserts a key into the tree
@@ -88,9 +88,9 @@ class BinarySearchTree:
     
     returns the original (top level) tree - allows for easy chaining in tests
     '''
-    def insert(self, key):
+    '''def insert(self, key):
         if self.key is None:
-            self.key = key
+            self.key = key # return new BST 
         elif self.key > key: 
             if self.left is None:
                 self.left = BinarySearchTree(self.debugger)
@@ -100,8 +100,21 @@ class BinarySearchTree:
                 self.right = BinarySearchTree(self.debugger)
             self.right.insert(key)
         self.calculate_sizes()
-        return self
+        return self '''
 
+    def insert(self, key):
+        if self.key is None:
+            self.key = key # return new BST 
+        elif self.key > key: 
+            if self.left is None:
+                self.left = BinarySearchTree(self.debugger)
+            self.left.insert(key)
+        elif self.key < key:
+            if self.right is None:
+                self.right = BinarySearchTree(self.debugger)
+            self.right.insert(key)
+        self.size = (self.right.size if self.right else 0) + (self.left.size if self.left else 0) + 1
+        return self
     
     ####### Part b #######
 
@@ -128,6 +141,10 @@ class BinarySearchTree:
     '''
     def rotate(self, direction, child_side):
         # Your code goes here
+        # Wanted to include a note here that I did not attempt to implement rotate because I have already
+        # taken two late days on this assignment and have another pset to complete. I will certainly
+        # attempt to implement it in my revision video and simply did not have the time or mental 
+        # capacity to complete it this week. 
         return self
 
     def print_bst(self):
