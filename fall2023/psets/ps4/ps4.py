@@ -34,17 +34,16 @@ def QuickSelect(arr, i):
     # Your code here
     # Feel free to use get_random_index(arr) or get_random_int(start_inclusive, end_inclusive)
     # ... see the helper functions below
-    # pri starts here
     assert(len(arr) > 0)
     if len(arr) == 1: 
         return arr[0]  
     else: 
         p = get_random_index(arr)
-        x = arr[p][0] # changed from arr[p] to arr[p][0]
+        x = arr[p][0] 
         less = []
         more = []
         equal = []
-        for j in range(len(arr)): # is i the key? and then arr[i] is the value? 
+        for j in range(len(arr)):
             if arr[j][0] < x: 
                 less.append(arr[j])
             elif arr[j][0] > x: 
@@ -79,8 +78,16 @@ NOTE: This is different from the QuickSelect definition. This function takes in 
 def MergeSortSelect(arr, query_list):
     # Only call MergeSort once
     # ... MergeSort has already been implemented for you (see below)
-    pass
-    return [(0, -1)] * len(query_list)  # replace this line with your return
+    # pri starts here 
+    merger = MergeSort(arr)
+    final = []
+    # the above returns a sorted list 
+    for i in query_list:
+        if 0 <= i < len(merger): 
+            final.append(merger[i])
+        else: 
+            final.append(None, None)
+    return final
 
 
 ##################################
