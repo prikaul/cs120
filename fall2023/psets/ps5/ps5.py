@@ -139,13 +139,10 @@ def bfs_2_coloring(G, precolored_nodes=None):
     # need to keep track of already visited nodes somehow
     visited.add(start)
     # now need to access the neighbors of the start vertex: 
-    # neighbors = G.edges[start]
     # next vertices, the set of hte next vertices you can go to in BFS 
     next_vertices = [start]
     # add those to the bfs_order 
-    # bfs_order.append(neighbors)
     # now need to add these new vertices to the visited set 
-    # visited.add(bfs_order)
     # now need to repeat this process on everything that's NOT in visited
     # this = start
     while next_vertices: #while there are still more vertices to traverse 
@@ -223,7 +220,11 @@ def iset_bfs_3_coloring(G):
     # is 2 colorable, you put that into your bfs2color function 
     # go from 0 to n/3
     # return none at the bottom ? / have a 0 case 
-    for 
+    n = G.N
+    for i in range(0, n/3 + 1): # check this 
+        for subset in combinations(G.N, i): # combinations takes in 
+            if is_independent_set(G, subset): 
+
 
     G.reset_colors()
     return None
