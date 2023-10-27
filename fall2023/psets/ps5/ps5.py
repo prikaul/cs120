@@ -131,45 +131,27 @@ def bfs_2_coloring(G, precolored_nodes=None):
     # TODO: Complete this function by implementing two-coloring using the colors 0 and 1.
     # If there is no valid coloring, reset all the colors to None using G.reset_colors()
     # pri starts here
-    start = random.choice(range(G.N)) # picks a random vertex out of the N available 
-    # next we need BFS to create an order of vertices 
-    # need to initialize an empty set 
-    bfs_order = [start]
-    # now want to enqueue the ones that are neighbors
-    # need to keep track of already visited nodes somehow
+    notvisited = set(range(G.N)) - visited
+    # or a for loop 
+    start = list(notvisited)[0] # start
+    G.colors[start] = 0
+    frontier = [start]
     visited.add(start)
-    # now need to access the neighbors of the start vertex: 
-    # next vertices, the set of hte next vertices you can go to in BFS 
-    next_vertices = [start]
-    # add those to the bfs_order 
-    # now need to add these new vertices to the visited set 
-    # now need to repeat this process on everything that's NOT in visited
-    # this = start
-    while next_vertices: #while there are still more vertices to traverse 
-        this = next_vertices[0] # accesses one of the next vertices 
-        next_vertices.remove(this) # takes it off of the list of next_vertices
+    # next_vertices = [start]
+    while frontier: # while there are still more vertices to traverse 
+        this = frontier.pop(0) # accesses one of the next vertices , frontier 
+        # frontier.remove(this)  
         for i in G.edges[this]:
             if i not in visited: 
-                bfs_order.append(i)
                 visited.add(i)
-                next_vertices.append(i)
-    
-    # Set the color of the start vertex to 0
-    G.colors[start] = 0
-    bfs_order.remove(start)
-    avail_colors = {0, 1} # set of available colors
-    for i in bfs_order: 
-        for j in G.edges[i]: 
-            if G.colors[j] is not None: # they are all the same color
-                G.colors[i] = (avail_colors - {G.colors[j]}).pop() # sets it to a diff color 
-                # check this 
-                if G.colors[j] is None:  
-                    G.reset_colors()
-                    return None
-                # check
-    
+                frontier.append(i)
+                G.colors[i] = 1 - G.colors[this]
     # G.reset_colors()
-    return G.colors
+    if G.is_graph_coloring_valid():
+            return G.colors
+    else: 
+        G.reset_colors()
+        return None
 
 '''
     Part B: Implement is_independent_set.
@@ -220,14 +202,16 @@ def iset_bfs_3_coloring(G):
     # is 2 colorable, you put that into your bfs2color function 
     # go from 0 to n/3
     # return none at the bottom ? / have a 0 case 
-    n = G.N
-    for i in range(0, n/3 + 1): # check this 
-        for subset in combinations(G.N, i): # combinations takes in 
-            if is_independent_set(G, subset): 
-
-
-    G.reset_colors()
-    return None
+    for i in range(0, (G.N // 3) + 1): # check this 
+        for subset in combinations(range(0, G.N), i): # combinations takes in 
+            subsetlst = list(subset)
+            if is_independent_set(G, subsetlst):
+                test = bfs_2_coloring(G, subsetlst)
+                if test is None: 
+                    G.reset_colors()
+                else: 
+                    return test
+    return None 
 
 # Feel free to add miscellaneous tests below!
 if __name__ == "__main__":
