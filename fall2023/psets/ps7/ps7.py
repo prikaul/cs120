@@ -191,6 +191,20 @@ def sat_3_coloring(G):
     solver = Glucose3()
 
     # TODO: Add the clauses to the solver
+    # pri starts here 
+    # somewhere want to use is_graph_coloring_valid to check 
+    # need to use solver.something 
+    vertices = len(G.N) # number of vertices 
+    k = 3 # number of colors 
+    colors = range(k)
+
+    # how do we add the clauses to the solver? 
+    # need to define vars, using a SET to do this 
+    vars = {(v, i): v * k + 1 + 1 for v in G.N for i in colors} # additional plus one for glucose, OH 
+
+    for vertex in G.N: # for each vertex v, want to check the CNF 
+        solver.add_clause(vars[v, i] for i in colors)
+
 
     # Attempt to solve, return None if no solution possible
     if not solver.solve():
