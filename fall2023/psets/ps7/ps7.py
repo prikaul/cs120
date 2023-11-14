@@ -204,12 +204,15 @@ def sat_3_coloring(G):
 
     # STEP 1 
     for vertex in G.N: # for each vertex v, want to check the CNF 
-        solver.add_clause(vars[v, i] for i in colors)
+        solver.add_clause([vars[v, i] for i in colors])
 
     # STEP 2 
     for edge in G.edges: 
-        
+        (first, second) = edge # pattern matching 
+        solver.add_clause([-vars[first, i] for i in colors])
+        solver.add_clause([-vars[second, i] for i in colors])
 
+    # need g.solve somewhere! 
 
     # Attempt to solve, return None if no solution possible
     if not solver.solve():
@@ -218,8 +221,14 @@ def sat_3_coloring(G):
 
     # Accesses the model in form [-v1, v2, -v3 ...], which denotes v1 = False, v2 = True, v3 = False, etc.
     solution = solver.get_model()
+    # the above line basically prints out a list of numbers, see documentation 
+    # the above is a LIST, i think. 
 
     # TODO: If a solution is found, convert it into a coloring and update G.colors
+    # fα = min{i ∈ [k] : αv,i = 1} from notes 
+    for value in solution: 
+        
+
 
     return G.colors
 
