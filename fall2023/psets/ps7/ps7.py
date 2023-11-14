@@ -228,6 +228,7 @@ def sat_3_coloring(G):
     # fα = min{i ∈ [k] : αv,i = 1} from notes 
     for value in solution: 
         
+        
 
 
     return G.colors
