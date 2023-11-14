@@ -1,4 +1,5 @@
 from itertools import product, combinations
+import random
 
 '''
 Before you start: Read the README and the Graph implementation below.
@@ -129,9 +130,28 @@ def bfs_2_coloring(G, precolored_nodes=None):
     
     # TODO: Complete this function by implementing two-coloring using the colors 0 and 1.
     # If there is no valid coloring, reset all the colors to None using G.reset_colors()
-    
-    G.reset_colors()
-    return None
+    # pri starts here
+    notvisited = set(range(G.N)) - visited
+    # or a for loop 
+    start = list(notvisited)[0] # start
+    G.colors[start] = 0
+    frontier = [start]
+    visited.add(start)
+    # next_vertices = [start]
+    while frontier: # while there are still more vertices to traverse 
+        this = frontier.pop(0) # accesses one of the next vertices , frontier 
+        # frontier.remove(this)  
+        for i in G.edges[this]:
+            if i not in visited: 
+                visited.add(i)
+                frontier.append(i)
+                G.colors[i] = 1 - G.colors[this]
+    # G.reset_colors()
+    if G.is_graph_coloring_valid():
+            return G.colors
+    else: 
+        G.reset_colors()
+        return None
 
 '''
     Part B: Implement is_independent_set.
@@ -141,7 +161,12 @@ def bfs_2_coloring(G, precolored_nodes=None):
 # Checks if subset is an independent set in G 
 def is_independent_set(G, subset):
     # TODO: Complete this function
-
+    # pri starts here 
+    for vertex in subset:
+        # go through the edges of the vertex, see if any of them are in the subset 
+        for i in G.edges[vertex]:
+            if i in subset:
+                return False 
     return True
 
 '''
@@ -169,9 +194,24 @@ def is_independent_set(G, subset):
 # If no coloring is possible, resets all of G's colors to None and returns None.
 def iset_bfs_3_coloring(G):
     # TODO: Complete this function.
-
-    G.reset_colors()
-    return None
+    # pri starts here 
+    # find one independent set, and 2 color the other two 
+    # sizes from 1 to n/3, iterates through all possible combinations of that size, each time 
+    # checking if it's an independent set. if it is then input into 2-colorable, 
+    # everything in the independent set is the 3rd color, everything not in the independent set 
+    # is 2 colorable, you put that into your bfs2color function 
+    # go from 0 to n/3
+    # return none at the bottom ? / have a 0 case 
+    for i in range(0, (G.N // 3) + 1): # check this 
+        for subset in combinations(range(0, G.N), i): # combinations takes in 
+            subsetlst = list(subset)
+            if is_independent_set(G, subsetlst):
+                test = bfs_2_coloring(G, subsetlst)
+                if test is None: 
+                    G.reset_colors()
+                else: 
+                    return test
+    return None 
 
 # Feel free to add miscellaneous tests below!
 if __name__ == "__main__":
