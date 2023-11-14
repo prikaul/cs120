@@ -202,8 +202,13 @@ def sat_3_coloring(G):
     # need to define vars, using a SET to do this 
     vars = {(v, i): v * k + 1 + 1 for v in G.N for i in colors} # additional plus one for glucose, OH 
 
+    # STEP 1 
     for vertex in G.N: # for each vertex v, want to check the CNF 
         solver.add_clause(vars[v, i] for i in colors)
+
+    # STEP 2 
+    for edge in G.edges: 
+        
 
 
     # Attempt to solve, return None if no solution possible
