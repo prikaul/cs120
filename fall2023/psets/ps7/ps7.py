@@ -192,27 +192,22 @@ def sat_3_coloring(G):
 
     # TODO: Add the clauses to the solver
     # pri starts here 
-    # somewhere want to use is_graph_coloring_valid to check 
-    # need to use solver.something 
-    vertices = len(G.N) # number of vertices 
-    k = 3 # number of colors 
-    colors = range(k)
+    vertices = range(G.N) 
+    colors = range(3)
 
-    # how do we add the clauses to the solver? 
-    # need to define vars, using a SET to do this 
-    vars = {(v, i): v * k + 1 + 1 for v in G.N for i in colors} # additional plus one for glucose, OH 
+    # DEFINE VARS X I, J
+    vars = {(v, i): v * 3 + i + 1 for v in vertices for i in colors} 
+
 
     # STEP 1 
-    for vertex in G.N: # for each vertex v, want to check the CNF 
-        solver.add_clause([vars[v, i] for i in colors])
+    for vertex in vertices: 
+        solver.add_clause([vars[vertex, i] for i in colors])
 
     # STEP 2 
-    for edge in G.edges: 
-        (first, second) = edge # pattern matching 
-        solver.add_clause([-vars[first, i] for i in colors])
-        solver.add_clause([-vars[second, i] for i in colors])
-
-    # need g.solve somewhere! 
+    for vertex in vertices: 
+        for edge in G.edges[vertex]: 
+            for color in colors: 
+                solver.add_clause([-vars[(vertex, color)], -vars[(edge, color)]])
 
     # Attempt to solve, return None if no solution possible
     if not solver.solve():
@@ -221,15 +216,14 @@ def sat_3_coloring(G):
 
     # Accesses the model in form [-v1, v2, -v3 ...], which denotes v1 = False, v2 = True, v3 = False, etc.
     solution = solver.get_model()
-    # the above line basically prints out a list of numbers, see documentation 
-    # the above is a LIST, i think. 
 
     # TODO: If a solution is found, convert it into a coloring and update G.colors
     # fα = min{i ∈ [k] : αv,i = 1} from notes 
     for value in solution: 
-        
-        
-
+        if value > 0: 
+            node = (value - 1) // 3
+            color = (value - 1) % 3
+            G.colors[node] = color
 
     return G.colors
 
