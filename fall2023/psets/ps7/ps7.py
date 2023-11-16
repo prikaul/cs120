@@ -198,7 +198,6 @@ def sat_3_coloring(G):
     # DEFINE VARS X I, J
     vars = {(v, i): v * 3 + i + 1 for v in vertices for i in colors} 
 
-
     # STEP 1 
     for vertex in vertices: 
         solver.add_clause([vars[vertex, i] for i in colors])
